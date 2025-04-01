@@ -1,30 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ProjetoTeste.DTO.Cadastros
-{
-    public class MaquinaDTO
-    {
+{   
 
         public class MaquinaCadastrarDTO
         {
-
-            public int Codigo { get; set; }
-            public string Nome { get; set; } = string.Empty;
-            public string? Descricao { get; set; }
-            public bool Ativa { get; set; }
+        [Required]
+        [MinLength(1)]
+        public string Nome { get; set; } = string.Empty;
+        public string? Descricao { get; set; }
+        [Required]
+        public bool Ativa { get; set; }
 
         }
 
         public class MaquinaAlterarDTO
         {
-            public int Codigo { get; set; }
-            public string Nome { get; set; } = string.Empty;
-            public string? Descricao { get; set; }
-            public bool Ativa { get; set; }
+        [Required]
+        [MinLength(1)]
+        public string Nome { get; set; } = string.Empty;
+        public string? Descricao { get; set; }
+        [Required]
+        public bool Ativa { get; set; }
         }
-    }
+
 }

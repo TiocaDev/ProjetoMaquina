@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace ProjetoTeste.Repositories.Cadastros
 {
         public class MaquinasRepository
@@ -18,26 +19,36 @@ namespace ProjetoTeste.Repositories.Cadastros
             return maquinas.Where(m => m.Ativa).ToList();
         }
         
-        public Maquina ConsultaPorCodigo(int codigo)
+        public Maquina? ConsultaPorCodigo(int codigo)
         {
-            var Maquina = maquinas.FirstOrDefault(m => m.Codigo == codigo);
-            if (Maquina == null)
-                throw new Exception($"Máquina com código {codigo} não encontrada!");
-
-            return Maquina;
+            return maquinas.FirstOrDefault(m => m.Codigo == codigo);
         }
 
-        public void Cadastrar(Maquina maquina)
+        public void Cadastrar(MaquinaCadastrar maquinaCadastrar)
         {
+            var maquina = new Maquina
+            {
+                Codigo = maquinaCadastrar.Codigo,
+                Nome = maquinaCadastrar.Nome,
+                Descricao = maquinaCadastrar.Descricao,
+                Ativa = maquinaCadastrar.Ativa
+            };
             maquinas.Add(maquina);
         }
 
-        public bool Alterar(int codigo, Maquina novaMaquina)
+        public bool Alterar(int codigo, MaquinaAlterar maquinaAlterar)
         {
             var index = maquinas.FindIndex(m => m.Codigo == codigo);
             if (index != -1)
             {
-                maquinas[index] = novaMaquina;
+                var maquina = new Maquina
+                {
+                    Codigo = maquinaAlterar.Codigo,
+                    Nome = maquinaAlterar.Nome,
+                    Descricao = maquinaAlterar.Descricao,
+                    Ativa = maquinaAlterar.Ativa
+                };
+                maquinas[index] = maquina;
                 return true;
             }
             return false;
