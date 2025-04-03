@@ -11,7 +11,8 @@ namespace ProjetoTeste.Controllers.Security
     //[Route("api/Security/[controller]")]
     [Route("api/Security/Auth")]
     [ApiController]
-    [Authorize]
+    [AllowAnonymous]
+    //[Authorize]
     public class AuthController : ControllerBase
     {
         private readonly AuthRepository _repository;
@@ -24,19 +25,19 @@ namespace ProjetoTeste.Controllers.Security
             _configuration = configuration;
         }
 
+
         /// <summary>
         /// Rota anônima para realizar o login
         /// </summary>
-        [AllowAnonymous]
         [HttpPost("Login")]
         public IActionResult Login([FromBody] LoginDTO login)
         {
-            if (login == null || string.IsNullOrEmpty(login.Usuario) || string.IsNullOrEmpty(login.Senha))
+            if (login == null || login.Id <= 0 || string.IsNullOrEmpty(login.Usuario) || string.IsNullOrEmpty(login.Senha))
             {
                 return BadRequest("Usuário e senha são obrigatórios.");
             }
 
-            var usuario = _repository.ConsultaPeloLogin(login.Usuario, login.Senha);
+            var usuario = _repository.ConsultaPeloLogin(login.Id, login.Usuario, login.Senha);
             if (usuario == null)
                 return Unauthorized("Usuário ou senha inválidos!");
 

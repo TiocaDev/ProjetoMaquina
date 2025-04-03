@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ProjetoTeste.Infra.Database;
 using ProjetoTeste.Model.Cadastro;
 using System;
 using System.Collections.Generic;
@@ -12,58 +14,98 @@ namespace ProjetoTeste.Repositories.Cadastros
         public class MaquinasRepository
     {
 
-        private static List<Maquina> maquinas = new List<Maquina>();
+        private readonly ProjetoTesteContext _context;
 
-        public List<Maquina> ConsultarTodos()
+        public MaquinasRepository(ProjetoTesteContext context)
         {
-            return maquinas.Where(m => m.Ativa).ToList();
-        }
-        
-        public Maquina? ConsultaPorCodigo(int codigo)
-        {
-            return maquinas.FirstOrDefault(m => m.Codigo == codigo);
+            _context = context;
         }
 
-        public void Cadastrar(MaquinaCadastrar maquinaCadastrar)
+        public async Task<List<Maquina>> ConsultarTodos()
         {
-            var maquina = new Maquina
-            {
-                Codigo = maquinaCadastrar.Codigo,
-                Nome = maquinaCadastrar.Nome,
-                Descricao = maquinaCadastrar.Descricao,
-                Ativa = maquinaCadastrar.Ativa
-            };
-            maquinas.Add(maquina);
+            return await _context.maquinas.ToListAsync();
         }
 
-        public bool Alterar(int codigo, MaquinaAlterar maquinaAlterar)
+        public async Task<Maquina> ConsultaPorCodigo(int codigo)
         {
-            var index = maquinas.FindIndex(m => m.Codigo == codigo);
-            if (index != -1)
-            {
-                var maquina = new Maquina
-                {
-                    Codigo = maquinaAlterar.Codigo,
-                    Nome = maquinaAlterar.Nome,
-                    Descricao = maquinaAlterar.Descricao,
-                    Ativa = maquinaAlterar.Ativa
-                };
-                maquinas[index] = maquina;
-                return true;
-            }
-            return false;
+            return await _context.maquinas.FindAsync(codigo);
         }
 
-        public bool Deletar(int codigo)
+        public async Task Cadastrar(Maquina maquina)
         {
-            var maquina = maquinas.FirstOrDefault(m => m.Codigo == codigo);
+            await _context.maquinas.AddAsync(maquina);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Alterar(Maquina maquina)
+        {
+            _context.maquinas.Update(maquina);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Deletar(int codigo)
+        {
+            var maquina = await _context.maquinas.FindAsync(codigo);
             if (maquina != null)
             {
-                maquinas.Remove(maquina);
-                return true;
+                _context.maquinas.Remove(maquina);
+                await _context.SaveChangesAsync();
             }
-            return false;
         }
+
+
+        //private static List<Maquina> maquinas = new List<Maquina>();
+
+        //public List<Maquina> ConsultarTodos()
+        //{
+        //    return maquinas.Where(m => m.Ativa).ToList();
+        //}
+
+        //public Maquina? ConsultaPorCodigo(int codigo)
+        //{
+        //    return maquinas.FirstOrDefault(m => m.Codigo == codigo);
+        //}
+
+        //public void Cadastrar(MaquinaCadastrar maquinaCadastrar)
+        //{
+        //    var maquina = new Maquina
+        //    {
+        //        Codigo = maquinaCadastrar.Codigo,
+        //        Nome = maquinaCadastrar.Nome,
+        //        Descricao = maquinaCadastrar.Descricao,
+        //        Ativa = maquinaCadastrar.Ativa
+        //    };
+        //    maquinas.Add(maquina);
+        //}
+
+        //public bool Alterar(int codigo, MaquinaAlterar maquinaAlterar)
+        //{
+        //    var index = maquinas.FindIndex(m => m.Codigo == codigo);
+        //    if (index != -1)
+        //    {
+        //        var maquina = new Maquina
+        //        {
+        //            Codigo = maquinaAlterar.Codigo,
+        //            Nome = maquinaAlterar.Nome,
+        //            Descricao = maquinaAlterar.Descricao,
+        //            Ativa = maquinaAlterar.Ativa
+        //        };
+        //        maquinas[index] = maquina;
+        //        return true;
+        //    }
+        //    return false;
+        //}
+
+        //public bool Deletar(int codigo)
+        //{
+        //    var maquina = maquinas.FirstOrDefault(m => m.Codigo == codigo);
+        //    if (maquina != null)
+        //    {
+        //        maquinas.Remove(maquina);
+        //        return true;
+        //    }
+        //    return false;
+        //}
 
     }
 }

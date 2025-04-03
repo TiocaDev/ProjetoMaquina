@@ -16,6 +16,7 @@ namespace ProjetoTeste.DTO.Cadastros
         public string? Descricao { get; set; }
         [Required]
         public bool Ativa { get; set; }
+        public int Codigo { get; set; }
 
         }
 
@@ -27,6 +28,7 @@ namespace ProjetoTeste.DTO.Cadastros
         public string? Descricao { get; set; }
         [Required]
         public bool Ativa { get; set; }
-        }
+        public int Codigo { get; set; }
+    }
 
 }

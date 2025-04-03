@@ -34,7 +34,7 @@ namespace ProjetoTeste.Services
 
             //Tempo de expiracão do token.
             var expiracao = _configuration["TokenConfiguration:ExpireHours"];
-            var expiration = DateTime.UtcNow.AddHours(12);
+            var expiration = DateTime.UtcNow.AddHours(double.Parse(expiracao));
 
             // classe que representa um token JWT e gera o token
             JwtSecurityToken token = new JwtSecurityToken(
