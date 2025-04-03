@@ -16,11 +16,7 @@ namespace ProjetoTeste.Repositories.Security
         {
             _context = context;
 
-            //_usuarios = new List<Login>
-            //{
-            //    new Login("1", "admin", "admin"),
-            //    new Login("teste", "teste")
-            //};
+            
         }
 
         public Login ConsultaPeloLogin(int id, string usuario, string senha)
@@ -30,22 +26,6 @@ namespace ProjetoTeste.Repositories.Security
 
         private readonly List<Login> _usuarios;
 
-        //public AuthRepository()
-        //{
-        //    // teste
-        //    _usuarios = new List<Login>
-        //    {
-        //        new Login("admin", "admin"),
-        //        new Login("teste", "teste")
-        //    };
-        //}
-
-        ///// <summary>
-        ///// Consulta um usuário pelo login e senha
-        ///// </summary>
-        //public Login? ConsultaPeloLogin(string usuario, string senha)
-        //{
-        //    return _usuarios.FirstOrDefault(u => u.Usuario == usuario && u.Senha == senha);
-        //}
+        
     }
 }

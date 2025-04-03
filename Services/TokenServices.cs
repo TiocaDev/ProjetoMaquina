@@ -22,13 +22,14 @@ namespace ProjetoTeste.Services
         {
             var claims = new[]
             {
-                    new Claim(JwtRegisteredClaimNames.Name, usuario.Usuario),
-                    new Claim("codigo", usuario.Senha.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                 };
+                        new Claim(JwtRegisteredClaimNames.Name, usuario.Usuario),
+                        new Claim("id", usuario.Id.ToString()),
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                     };
 
             //gera uma chave com base em um algoritmo simetrico
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:key"]));
+
             //gera a assinatura digital do token usando o algoritmo Hmac e a chave privada
             var credenciais = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
 [ApiController]
-[AllowAnonymous]
+///[AllowAnonymous]
 public class MaquinasController : ControllerBase
 {
     private readonly MaquinasRepository _repository;
@@ -28,10 +28,6 @@ public class MaquinasController : ControllerBase
     {
         return Ok(await _repository.ConsultarTodos());
     }
-    //public ActionResult<List<Maquina>> GetAtivas()
-    //{
-    //    return Ok(_repository.ConsultarTodos());
-    //}
 
     /// <summary>
     /// Consulta Maquinas por código
@@ -45,15 +41,6 @@ public class MaquinasController : ControllerBase
             return NotFound();
         return Ok(maquina);
     }
-
-    //public ActionResult<Maquina> PorCodigo(int codigo)
-    //{
-    //    var maquina = _repository.ConsultaPorCodigo(codigo);
-    //    if (maquina == null)
-    //        return NotFound("Máquina não encontrada.");
-
-    //    return Ok(maquina);
-    //}
 
     /// <summary>
     /// Cadastrar uma Maquina
@@ -73,19 +60,6 @@ public class MaquinasController : ControllerBase
         await _repository.Cadastrar(maquina);
         return CreatedAtAction(nameof(PorCodigo), new { codigo = maquina.Codigo }, maquina);
     }
-
-    //public ActionResult Cadastrar([FromBody] MaquinaCadastrarDTO maquinaDTO)
-    //{
-    //    MaquinaCadastrar maquinaCadastrar = new MaquinaCadastrar
-    //    {            
-    //        Nome = maquinaDTO.Nome,
-    //        Descricao = maquinaDTO.Descricao,
-    //        Ativa = maquinaDTO.Ativa
-    //    };
-
-    //    _repository.Cadastrar(maquinaCadastrar);
-    //    return Ok("Máquina cadastrada com sucesso!");
-    //}
 
     /// <summary>
     /// Alterar uma Maquina
@@ -109,25 +83,6 @@ public class MaquinasController : ControllerBase
         return NoContent();
     }
 
-    //public ActionResult Alterar(int codigo, [FromBody] MaquinaAlterarDTO maquinaAlterarDTO)
-    //{
-    //    if (maquinaAlterarDTO == null)
-    //        return BadRequest("Dados inválidos.");
-
-    //    MaquinaAlterar maquinaAlterar = new MaquinaAlterar
-    //    {           
-    //        Nome = maquinaAlterarDTO.Nome,
-    //        Descricao = maquinaAlterarDTO.Descricao,
-    //        Ativa = maquinaAlterarDTO.Ativa
-    //    };
-
-    //    bool alterado = _repository.Alterar(codigo, maquinaAlterar);
-    //    if (!alterado)
-    //        return NotFound("Máquina não encontrada.");
-
-    //    return NoContent();
-    //}
-
     /// <summary>
     /// Remove uma máquina pelo código
     /// </summary>
@@ -139,12 +94,4 @@ public class MaquinasController : ControllerBase
         return NoContent();
     }
 
-    //public ActionResult Deletar(int codigo)
-    //{
-    //    bool deletado = _repository.Deletar(codigo);
-    //    if (!deletado)
-    //        return NotFound("Máquina não encontrada.");
-
-    //    return NoContent();
-    //}
 }

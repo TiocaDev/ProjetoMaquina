@@ -53,59 +53,5 @@ namespace ProjetoTeste.Repositories.Cadastros
             }
         }
 
-
-        //private static List<Maquina> maquinas = new List<Maquina>();
-
-        //public List<Maquina> ConsultarTodos()
-        //{
-        //    return maquinas.Where(m => m.Ativa).ToList();
-        //}
-
-        //public Maquina? ConsultaPorCodigo(int codigo)
-        //{
-        //    return maquinas.FirstOrDefault(m => m.Codigo == codigo);
-        //}
-
-        //public void Cadastrar(MaquinaCadastrar maquinaCadastrar)
-        //{
-        //    var maquina = new Maquina
-        //    {
-        //        Codigo = maquinaCadastrar.Codigo,
-        //        Nome = maquinaCadastrar.Nome,
-        //        Descricao = maquinaCadastrar.Descricao,
-        //        Ativa = maquinaCadastrar.Ativa
-        //    };
-        //    maquinas.Add(maquina);
-        //}
-
-        //public bool Alterar(int codigo, MaquinaAlterar maquinaAlterar)
-        //{
-        //    var index = maquinas.FindIndex(m => m.Codigo == codigo);
-        //    if (index != -1)
-        //    {
-        //        var maquina = new Maquina
-        //        {
-        //            Codigo = maquinaAlterar.Codigo,
-        //            Nome = maquinaAlterar.Nome,
-        //            Descricao = maquinaAlterar.Descricao,
-        //            Ativa = maquinaAlterar.Ativa
-        //        };
-        //        maquinas[index] = maquina;
-        //        return true;
-        //    }
-        //    return false;
-        //}
-
-        //public bool Deletar(int codigo)
-        //{
-        //    var maquina = maquinas.FirstOrDefault(m => m.Codigo == codigo);
-        //    if (maquina != null)
-        //    {
-        //        maquinas.Remove(maquina);
-        //        return true;
-        //    }
-        //    return false;
-        //}
-
     }
 }

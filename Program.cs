@@ -16,11 +16,16 @@ using Microsoft.EntityFrameworkCore;
 using ProjetoTeste.Infra.Database;
 using System.Reflection;
 using System.Xml.Linq;
+using ProjetoTeste.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:key"]);
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
     .AddJwtBearer(options =>
     {
         options.RequireHttpsMetadata = false;
@@ -33,7 +38,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["TokenConfiguration:Issuer"],
             ValidAudience = builder.Configuration["TokenConfiguration:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(key)
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
     });
 
@@ -82,7 +87,7 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "JWT Authorization header using the Bearer scheme.\r\n\r\n Enter 'Bearer'[space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+        Description = "Insira o token JWT assim: Bearer {seu_token}",
     });
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
@@ -108,8 +113,9 @@ builder.Services.AddDbContext<ProjetoTesteContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Adiciona o serviço do repositório (injeção de dependência)
-//builder.Services.AddSingleton<MaquinasRepository>();
 builder.Services.AddScoped<MaquinasRepository>();
+// Adiciona o serviço do repositório (injeção de dependência)
+builder.Services.AddScoped<LancamentosRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -127,8 +133,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
