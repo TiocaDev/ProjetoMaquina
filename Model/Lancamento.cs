@@ -44,5 +44,12 @@ namespace ProjetoTeste.Model
         [Column("unidade")]
         public string Unidade { get; set; } = string.Empty;
     }
+
+    public class LancamentoResumo
+    {
+        public int CodigoLancamento { get; set; }
+        public string Unidade { get; set; } = string.Empty;
+        public int Quantidade { get; set; }
+    }
 }
 

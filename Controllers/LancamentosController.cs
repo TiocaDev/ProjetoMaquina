@@ -160,5 +160,12 @@ namespace ProjetoTeste.Controllers
             }
 
         }
+
+        [HttpGet("{codigo}/resumo")]
+        public async Task<IActionResult> ConsultarResumo(int codigo)
+        {
+            var resumo = await _repository.ConsultarResumoPorCodigo(codigo);
+            return Ok(resumo);
+        }
     }
 }
