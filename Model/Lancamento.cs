@@ -21,7 +21,28 @@ namespace ProjetoTeste.Model
         [Required]
         [Column("quantidade")]
         public int Quantidade { get; set; }
-        
+        public List<LancamentoItem> Itens { get; set; } = new();
+
+    }
+
+    public class LancamentoItem
+    {
+        [Key]
+        [Column("codigo")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Codigo { get; set; }
+        [Required]
+        [Column("codigo_lancamento")]
+        public int CodigoLancamento { get; set; }
+        [Required]
+        [Column("codigo_produto")]
+        public int CodigoProduto { get; set; }
+        [Required]
+        [Column("quantidade")]
+        public int Quantidade { get; set; }
+        [Required]
+        [Column("unidade")]
+        public string Unidade { get; set; } = string.Empty;
     }
 }
 

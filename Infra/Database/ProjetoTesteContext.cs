@@ -13,6 +13,7 @@ namespace ProjetoTeste.Infra.Database
         public DbSet<Maquina> maquinas { get; set; }
         public DbSet<Login> usuarios { get; set; }
         public DbSet<Lancamento> lancamentos { get; set; }
+        public DbSet<LancamentoItem> LancamentosItens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,6 +30,10 @@ namespace ProjetoTeste.Infra.Database
             modelBuilder.Entity<Lancamento>()
                 .ToTable("lancamentos") 
                 .HasKey(l => l.Codigo);
+
+            modelBuilder.Entity<LancamentoItem>()
+                .ToTable("lancamentos_itens")
+                .HasKey(li => li.Codigo);
         }
     }
 }

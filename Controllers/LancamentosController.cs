@@ -34,7 +34,7 @@ namespace ProjetoTeste.Controllers
             {
                 var maquina = await _maquinasRepository.ConsultaPorCodigo(lancamentoDTO.CodigoMaquina);
                 if (maquina == null)
-                    return NotFound(new { message = "Máquina não encontrada." });
+                    return NotFound("Máquina não encontrada.");
 
                 // Obtém o ID do usuário a partir do JWT
                 var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
@@ -50,7 +50,18 @@ namespace ProjetoTeste.Controllers
                 };
 
                 var novoLancamento = await _repository.Cadastrar(lancamento);
+                var itens = lancamentoDTO.Itens.Select(item => new LancamentoItem
+                {
+                    CodigoLancamento = novoLancamento.Codigo,
+                    CodigoProduto = item.CodigoProduto,
+                    Quantidade = item.Quantidade,
+                    Unidade = item.Unidade
+                }).ToList();
+
+                await _repository.CadastrarItens(itens);
+
                 return CreatedAtAction(nameof(Cadastrar), new { id = novoLancamento.Codigo }, novoLancamento);
+            
             }
             catch (Exception ex)
             {
@@ -101,7 +112,46 @@ namespace ProjetoTeste.Controllers
                 return Ok(lancamento);
             }
             catch(Exception ex)
-{
+            {
+                return BadRequest(new
+                {
+                    message = "Ocorreu um erro ao processar a solicitação",
+                    detail = ex.Message
+                });
+            }
+
+        }
+
+        /// <summary>
+        /// Consulta de item por código
+        /// </summary>
+        [Authorize]
+        [HttpGet("{codigo}/item")]
+        public async Task<IActionResult> ConsultarPorCodigoComItens(int codigo)
+        {
+            try
+            {
+                var lancamento = await _repository.ConsultarPorCodigoComItens(codigo);
+                if (lancamento == null)
+                    return NotFound("Lançamento não encontrado");
+
+                var resultado = new LancamentoDetalhadoDTO
+                {
+                    Codigo = lancamento.Codigo,
+                    CodigoMaquina = lancamento.CodigoMaquina,
+                    Quantidade = lancamento.Quantidade,
+                    Itens = lancamento.Itens.Select(item => new LancamentoItemDTO
+                    {
+                        CodigoProduto = item.CodigoProduto,
+                        Quantidade = item.Quantidade,
+                        Unidade = item.Unidade
+                    }).ToList()
+                };
+
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
                 return BadRequest(new
                 {
                     message = "Ocorreu um erro ao processar a solicitação",
